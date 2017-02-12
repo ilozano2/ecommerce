@@ -3,13 +3,12 @@ from __future__ import unicode_literals
 import logging
 
 import pycountry
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Div, HTML, Layout
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 from oscar.core.loading import get_model
-
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Div, HTML, Layout
 
 logger = logging.getLogger(__name__)
 Basket = get_model('basket', 'Basket')
@@ -126,8 +125,13 @@ class PaymentForm(forms.Form):
                 raise ValidationError({'postal_code': _('This field is required.')})
 
             if len(postal_code) > 9:
-                raise ValidationError(
-                    {'postal_code': _(
-                        'Postal codes for the U.S. and Canada are limited to nine (9) characters.')})
+                raise ValidationError({
+                    'postal_code': _(
+                        'Postal codes for the U.S. and Canada are limited to nine (9) characters.')
+                })
 
         return cleaned_data
+
+
+class StripePaymentForm(PaymentForm):
+    stripeToken = forms.CharField(widget=forms.HiddenInput(), required=True)

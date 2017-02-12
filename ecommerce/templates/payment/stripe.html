@@ -1,0 +1,12 @@
+{% load compress %}
+{% load staticfiles %}
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+{% compress js %}
+  <script>
+      Stripe.postUrl = '{% url 'stripe_submit' %}';
+      Stripe.setPublishableKey('{{ client_side_payment_processor.publishable_key }}');
+  </script>
+  <script src="{% static 'js/payment_processors/stripe.js' %}"></script>
+{% endcompress %}

@@ -4,7 +4,6 @@ import logging
 
 import six
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db import transaction
@@ -13,7 +12,7 @@ from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import FormView, View
+from django.views.generic import View
 from oscar.apps.partner import strategy
 from oscar.apps.payment.exceptions import PaymentError, UserCancelled, TransactionDeclined
 from oscar.core.loading import get_class, get_model
@@ -21,9 +20,9 @@ from oscar.core.loading import get_class, get_model
 from ecommerce.extensions.checkout.mixins import EdxOrderPlacementMixin
 from ecommerce.extensions.checkout.utils import get_receipt_page_url
 from ecommerce.extensions.payment.exceptions import InvalidSignatureError, InvalidBasketError
-from ecommerce.extensions.payment.forms import PaymentForm
 from ecommerce.extensions.payment.processors.cybersource import Cybersource
 from ecommerce.extensions.payment.utils import clean_field_value
+from ecommerce.extensions.payment.views import BasePaymentSubmitView
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +36,7 @@ OrderNumberGenerator = get_class('order.utils', 'OrderNumberGenerator')
 OrderTotalCalculator = get_class('checkout.calculators', 'OrderTotalCalculator')
 
 
-class CybersourceSubmitView(FormView):
+class CybersourceSubmitView(BasePaymentSubmitView):
     """ Starts CyberSource payment process.
 
     This view is intended to be called asynchronously by the payment form. The view expects POST data containing a
@@ -53,17 +52,6 @@ class CybersourceSubmitView(FormView):
         'first_name': 'bill_to_forename',
         'last_name': 'bill_to_surname',
     }
-    form_class = PaymentForm
-    http_method_names = ['post', 'options']
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(CybersourceSubmitView, self).dispatch(request, *args, **kwargs)
-
-    def get_form_kwargs(self):
-        kwargs = super(CybersourceSubmitView, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
 
     def _basket_error_response(self, error_msg):
         data = {

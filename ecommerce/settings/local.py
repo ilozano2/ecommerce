@@ -102,6 +102,10 @@ PAYMENT_PROCESSOR_CONFIG = {
             'cancel_checkout_path': PAYMENT_PROCESSOR_CANCEL_PATH,
             'error_path': PAYMENT_PROCESSOR_ERROR_PATH,
         },
+        'stripe': {
+             'publishable_key': 'fake-publishable-key',
+             'secret_key': 'fake-secret-key',
+         },
     },
 }
 # END PAYMENT PROCESSING

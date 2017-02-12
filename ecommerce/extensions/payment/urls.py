@@ -1,7 +1,7 @@
 """ Payment-related URLs """
 from django.conf.urls import url
 
-from ecommerce.extensions.payment.views import cybersource, PaymentFailedView, SDNFailure
+from ecommerce.extensions.payment.views import cybersource, PaymentFailedView, SDNFailure, stripe
 from ecommerce.extensions.payment.views.paypal import PaypalPaymentExecutionView, PaypalProfileAdminView
 
 urlpatterns = [
@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^sdn/failure/$', SDNFailure.as_view(), name='sdn_failure'),
     url(r'^paypal/execute/$', PaypalPaymentExecutionView.as_view(), name='paypal_execute'),
     url(r'^paypal/profiles/$', PaypalProfileAdminView.as_view(), name='paypal_profiles'),
+    url(r'^stripe/submit/$', stripe.StripeSubmitView.as_view(), name='stripe_submit'),
 ]
