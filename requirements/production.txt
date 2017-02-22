@@ -2,11 +2,7 @@
 -r base.txt
 
 django-ses==0.8.1
-
-# Later versions of gevent wrap Python's __import__ in a way that breaks Oscar imports.
-# For more, see https://github.com/edx/ecommerce/pull/920.
-gevent==1.0.2
-
+gevent==1.2.1
 gunicorn==19.6.0
 MySQL-python==1.2.5
 newrelic==2.74.0.54
