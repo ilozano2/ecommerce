@@ -1,5 +1,5 @@
 import datetime
-import urllib.request, urllib.parse, urllib.error
+import urllib
 
 import httpretty
 import pytz

@@ -1,4 +1,4 @@
-import urllib.request, urllib.parse, urllib.error
+import urllib
 from decimal import Decimal
 
 import ddt

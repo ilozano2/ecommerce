@@ -1,5 +1,5 @@
 import abc
-import urllib.request, urllib.parse, urllib.error
+import urllib
 import socket
 
 from bok_choy.page_object import PageObject, PageLoadError, unguarded

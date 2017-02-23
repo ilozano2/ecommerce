@@ -108,7 +108,7 @@ class CourseMigrationView(View):
 
             # Format the output for display
             output = 'STDOUT\n{out}\n\nSTDERR\n{err}\n\nLOG\n{log}'.format(out=out.getvalue(), err=err.getvalue(),
-                                                                            log=log.getvalue())
+                                                                           log=log.getvalue())
 
             return HttpResponse(output, content_type='text/plain')
         finally:
@@ -169,7 +169,7 @@ class ConvertCourseView(View):
 
             # Format the output for display
             output = 'STDOUT\n{out}\n\nSTDERR\n{err}\n\nLOG\n{log}'.format(out=out.getvalue(), err=err.getvalue(),
-                                                                            log=log.getvalue())
+                                                                           log=log.getvalue())
 
             return HttpResponse(output, content_type='text/plain')
         finally:

@@ -1,5 +1,5 @@
 import logging
-import urllib.request, urllib.parse, urllib.error
+import urllib
 
 from babel.numbers import format_currency as default_format_currency
 from django.conf import settings

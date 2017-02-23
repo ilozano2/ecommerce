@@ -1,7 +1,7 @@
 import datetime
 import hashlib
 import json
-import urllib.request, urllib.parse, urllib.error
+import urllib
 
 import ddt
 import httpretty
