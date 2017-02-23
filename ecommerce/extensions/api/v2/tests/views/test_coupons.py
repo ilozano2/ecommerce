@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 
 import datetime
 import json
@@ -745,7 +745,7 @@ class CouponViewSetFunctionalTest(CouponMixin, CourseCatalogTestMixin, CourseCat
         response_data = self.get_response_json('POST', COUPONS_LINK, data=self.data)
         coupon = Product.objects.get(id=response_data['coupon_id'])
         voucher = coupon.attr.coupon_vouchers.vouchers.first()
-        self.assertEquals(voucher.offers.first().max_global_applications, max_uses)
+        self.assertEqual(voucher.offers.first().max_global_applications, max_uses)
 
     def update_prepaid_invoice_data(self):
         """ Update the 'data' class variable with invoice information. """

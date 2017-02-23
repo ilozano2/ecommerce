@@ -60,7 +60,7 @@ class ProductSerializerMixin(object):
             'id': product.id,
             'url': self.get_full_url(reverse('api:v2:product-detail', kwargs={'pk': product.id})),
             'structure': product.structure,
-            'product_class': unicode(product.get_product_class()),
+            'product_class': str(product.get_product_class()),
             'title': product.title,
             'expires': product.expires.strftime(ISO_8601_FORMAT) if product.expires else None,
             'attribute_values': attribute_values,
@@ -83,5 +83,5 @@ class ProductSerializerMixin(object):
             'product': stockrecord.product.id,
             'partner_sku': stockrecord.partner_sku,
             'price_currency': stockrecord.price_currency,
-            'price_excl_tax': unicode(stockrecord.price_excl_tax),
+            'price_excl_tax': str(stockrecord.price_excl_tax),
         }

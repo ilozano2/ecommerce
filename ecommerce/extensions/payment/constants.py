@@ -1,5 +1,5 @@
 """Payment processor constants."""
-from __future__ import unicode_literals
+
 
 import six
 from django.utils.translation import ugettext_lazy as _

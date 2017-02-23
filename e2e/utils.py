@@ -2,5 +2,5 @@
 
 
 def str2bool(s):
-    s = unicode(s)
-    return s.lower() in (u'yes', u'true', u't', u'1')
+    s = str(s)
+    return s.lower() in ('yes', 'true', 't', '1')

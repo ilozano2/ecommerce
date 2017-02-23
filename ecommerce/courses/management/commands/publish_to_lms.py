@@ -1,5 +1,5 @@
 """ This command publish the courses to LMS."""
-from __future__ import unicode_literals
+
 import logging
 from optparse import make_option
 import os
@@ -48,14 +48,14 @@ class Command(BaseCommand):
                     if publishing_error:
                         failed += 1
                         logger.error(
-                            u"(%d/%d) Failed to publish %s: %s", index, total_courses, course_id, publishing_error
+                            "(%d/%d) Failed to publish %s: %s", index, total_courses, course_id, publishing_error
                         )
                     else:
-                        logger.info(u"(%d/%d) Successfully published %s.", index, total_courses, course_id)
+                        logger.info("(%d/%d) Successfully published %s.", index, total_courses, course_id)
                 except Course.DoesNotExist:
                     failed += 1
                     logger.error(
-                        u"(%d/%d) Failed to publish %s: Course does not exist.", index, total_courses, course_id
+                        "(%d/%d) Failed to publish %s: Course does not exist.", index, total_courses, course_id
                     )
         if failed:
             logger.error("Completed publishing courses. %d of %d failed.", failed, total_courses)

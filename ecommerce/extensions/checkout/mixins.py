@@ -1,5 +1,5 @@
 # Note: If future versions of django-oscar include new mixins, they will need to be imported here.
-from __future__ import unicode_literals
+
 
 import abc
 import logging
@@ -26,15 +26,13 @@ Source = get_model('payment', 'Source')
 SourceType = get_model('payment', 'SourceType')
 
 
-class EdxOrderPlacementMixin(OrderPlacementMixin):
+class EdxOrderPlacementMixin(OrderPlacementMixin, metaclass=abc.ABCMeta):
     """ Mixin for edX-specific order placement. """
 
     # Instance of a payment processor with which to handle payment. Subclasses should set this value.
     payment_processor = None
 
     order_placement_failure_msg = 'Payment was received, but an order for basket [%d] could not be placed.'
-
-    __metaclass__ = abc.ABCMeta
 
     def add_payment_event(self, event):  # pylint: disable = arguments-differ
         """ Record a payment event for creation once the order is placed. """

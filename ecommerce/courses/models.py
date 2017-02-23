@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 import logging
 
 from django.conf import settings
@@ -38,7 +38,7 @@ class Course(models.Model):
     thumbnail_url = models.URLField(null=True, blank=True)
 
     def __unicode__(self):
-        return unicode(self.id)
+        return str(self.id)
 
     def _create_parent_seat(self):
         """ Create the parent seat product if it does not already exist. """
@@ -109,13 +109,13 @@ class Course(models.Model):
 
     def get_course_seat_name(self, certificate_type, id_verification_required):
         """ Returns the name for a course seat. """
-        name = u'Seat in {}'.format(self.name)
+        name = 'Seat in {}'.format(self.name)
 
         if certificate_type != '':
-            name += u' with {} certificate'.format(certificate_type)
+            name += ' with {} certificate'.format(certificate_type)
 
             if id_verification_required:
-                name += u' (and ID verification)'
+                name += ' (and ID verification)'
 
         return name
 
@@ -151,7 +151,7 @@ class Course(models.Model):
             Product:  The seat that has been created or updated.
         """
         certificate_type = certificate_type.lower()
-        course_id = unicode(self.id)
+        course_id = str(self.id)
 
         if certificate_type == self.certificate_type_for_mode('audit'):
             # Yields a match if attribute names do not include 'certificate_type'.

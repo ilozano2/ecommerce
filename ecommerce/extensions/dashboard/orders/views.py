@@ -47,7 +47,7 @@ class OrderListView(FilterFieldsMixin, CoreOrderListView):
         # to the form constructor. This results in the form not being populated when re-rendered.
         self.form = self.form_class(self.request.GET)
         if self.form.is_valid():
-            for field, value in self.form.cleaned_data.iteritems():
+            for field, value in self.form.cleaned_data.items():
                 if value:
                     _filter = self.get_filter_fields().get(field)
 

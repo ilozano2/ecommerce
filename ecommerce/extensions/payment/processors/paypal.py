@@ -1,9 +1,9 @@
 """ PayPal payment processing. """
-from __future__ import unicode_literals
+
 
 import logging
 from decimal import Decimal
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 import paypalrestsdk
 import waffle
@@ -91,7 +91,7 @@ class Paypal(BasePaymentProcessor):
             },
             'transactions': [{
                 'amount': {
-                    'total': unicode(basket.total_incl_tax),
+                    'total': str(basket.total_incl_tax),
                     'currency': basket.currency,
                 },
                 'item_list': {
@@ -102,7 +102,7 @@ class Paypal(BasePaymentProcessor):
                             'name': middle_truncate(line.product.title, 127),
                             # PayPal requires that the sum of all the item prices (where price = price * quantity)
                             # equals to the total amount set in amount['total'].
-                            'price': unicode(line.line_price_incl_tax_incl_discounts / line.quantity),
+                            'price': str(line.line_price_incl_tax_incl_discounts / line.quantity),
                             'currency': line.stockrecord.price_currency,
                         }
                         for line in basket.all_lines()
@@ -131,7 +131,7 @@ class Paypal(BasePaymentProcessor):
                 else:
                     if i < available_attempts:
                         logger.warning(
-                            u"Creating PayPal payment for basket [%d] was unsuccessful. Will retry.",
+                            "Creating PayPal payment for basket [%d] was unsuccessful. Will retry.",
                             basket.id,
                             exc_info=True
                         )
@@ -144,7 +144,7 @@ class Paypal(BasePaymentProcessor):
                             basket=basket
                         )
                         logger.error(
-                            u"%s [%d], %s [%d].",
+                            "%s [%d], %s [%d].",
                             "Failed to create PayPal payment for basket",
                             basket.id,
                             "PayPal's response recorded in entry",
@@ -156,13 +156,13 @@ class Paypal(BasePaymentProcessor):
             except:  # pylint: disable=bare-except
                 if i < available_attempts:
                     logger.warning(
-                        u"Creating PayPal payment for basket [%d] resulted in an exception. Will retry.",
+                        "Creating PayPal payment for basket [%d] resulted in an exception. Will retry.",
                         basket.id,
                         exc_info=True
                     )
                 else:
                     logger.exception(
-                        u"After %d retries, creating PayPal payment for basket [%d] still experienced exception.",
+                        "After %d retries, creating PayPal payment for basket [%d] still experienced exception.",
                         i,
                         basket.id
                     )
@@ -304,7 +304,7 @@ class Paypal(BasePaymentProcessor):
 
             refund = sale.refund({
                 'amount': {
-                    'total': unicode(amount),
+                    'total': str(amount),
                     'currency': currency,
                 }
             })

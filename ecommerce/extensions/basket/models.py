@@ -51,7 +51,7 @@ class Basket(AbstractBasket):
             self.vouchers.remove(v)
 
     def __unicode__(self):
-        return _(u"{id} - {status} basket (owner: {owner}, lines: {num_lines})").format(
+        return _("{id} - {status} basket (owner: {owner}, lines: {num_lines})").format(
             id=self.id,
             status=self.status,
             owner=self.owner,

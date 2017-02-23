@@ -1,5 +1,5 @@
 """Order Utility Classes. """
-from __future__ import unicode_literals
+
 import logging
 
 from oscar.apps.order.utils import OrderCreator as OscarOrderCreator
@@ -45,7 +45,7 @@ class OrderNumberGenerator(object):
             string: Order number.
         """
         order_id = int(basket_id) + self.OFFSET
-        return u'{prefix}-{order_id}'.format(prefix=partner.short_code.upper(), order_id=order_id)
+        return '{prefix}-{order_id}'.format(prefix=partner.short_code.upper(), order_id=order_id)
 
     def basket_id(self, order_number):
         """Inverse of order number generation.

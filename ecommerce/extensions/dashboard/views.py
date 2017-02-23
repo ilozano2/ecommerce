@@ -60,10 +60,10 @@ class FilterFieldsMixin(object):
 
     def exposed_fields(self):
         """ Returns the dictionary of fields that will be immediately exposed to the user in the UI. """
-        return {field: details for (field, details) in self.get_filter_fields().iteritems() if details['exposed']}
+        return {field: details for (field, details) in self.get_filter_fields().items() if details['exposed']}
 
     def get_context_data(self, **kwargs):
         context = super(FilterFieldsMixin, self).get_context_data(**kwargs)
-        context['exposed_field_ids'] = ['id_{}'.format(field) for field in self.exposed_fields().keys()]
+        context['exposed_field_ids'] = ['id_{}'.format(field) for field in list(self.exposed_fields().keys())]
 
         return context

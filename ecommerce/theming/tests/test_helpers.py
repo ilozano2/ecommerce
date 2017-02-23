@@ -47,7 +47,7 @@ class TestHelpers(TestCase):
         """
         theme = get_current_theme()
         self.assertEqual(theme.path, settings.DJANGO_ROOT + "/tests/themes/test-theme")
-        self.assertIn(theme.path, unicode(theme))
+        self.assertIn(theme.path, str(theme))
 
     @with_comprehensive_theme('test-theme-2')
     def test_current_theme_path_2(self):

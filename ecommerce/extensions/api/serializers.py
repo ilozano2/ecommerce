@@ -1,5 +1,5 @@
 """Serializers for data manipulated by ecommerce API endpoints."""
-from __future__ import unicode_literals
+
 
 from decimal import Decimal
 import logging
@@ -331,17 +331,17 @@ class AtomicPublicationSerializer(serializers.Serializer):  # pylint: disable=ab
             product_class = product.get('product_class')
             if product_class != 'Seat':
                 raise serializers.ValidationError(
-                    _(u"Invalid product class [{product_class}] requested.".format(product_class=product_class))
+                    _("Invalid product class [{product_class}] requested.".format(product_class=product_class))
                 )
 
             # Verify that attributes required to create a Seat are present.
             attrs = self._flatten(product['attribute_values'])
             if attrs.get('id_verification_required') is None:
-                raise serializers.ValidationError(_(u"Products must indicate whether ID verification is required."))
+                raise serializers.ValidationError(_("Products must indicate whether ID verification is required."))
 
             # Verify that a price is present.
             if product.get('price') is None:
-                raise serializers.ValidationError(_(u"Products must have a price."))
+                raise serializers.ValidationError(_("Products must have a price."))
 
         return products
 
@@ -369,9 +369,9 @@ class AtomicPublicationSerializer(serializers.Serializer):  # pylint: disable=ab
         try:
             if not waffle.switch_is_active('publish_course_modes_to_lms'):
                 message = _(
-                    u'Course [{course_id}] was not published to LMS '
-                    u'because the switch [publish_course_modes_to_lms] is disabled. '
-                    u'To avoid ghost SKUs, data has not been saved.'
+                    'Course [{course_id}] was not published to LMS '
+                    'because the switch [publish_course_modes_to_lms] is disabled. '
+                    'To avoid ghost SKUs, data has not been saved.'
                 ).format(course_id=course_id)
 
                 raise Exception(message)
@@ -420,7 +420,7 @@ class AtomicPublicationSerializer(serializers.Serializer):  # pylint: disable=ab
                     raise Exception(resp_message)
 
         except Exception as e:  # pylint: disable=broad-except
-            logger.exception(u'Failed to save and publish [%s]: [%s]', course_id, e.message)
+            logger.exception('Failed to save and publish [%s]: [%s]', course_id, e.message)
             return False, e, e.message
 
     def _flatten(self, attrs):

@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 import abc
 from collections import namedtuple
@@ -13,9 +13,8 @@ HandledProcessorResponse = namedtuple('HandledProcessorResponse',
                                       ['transaction_id', 'total', 'currency', 'card_number', 'card_type'])
 
 
-class BasePaymentProcessor(object):  # pragma: no cover
+class BasePaymentProcessor(object, metaclass=abc.ABCMeta):  # pragma: no cover
     """Base payment processor class."""
-    __metaclass__ = abc.ABCMeta
 
     # NOTE: Ensure that, if passed to a Django template, Django does not attempt to instantiate this class
     # or its children. Doing so without a Site object will cause issues.
@@ -134,10 +133,8 @@ class BasePaymentProcessor(object):  # pragma: no cover
         return waffle.switch_is_active(settings.PAYMENT_PROCESSOR_SWITCH_PREFIX + cls.NAME)
 
 
-class BaseClientSidePaymentProcessor(BasePaymentProcessor):  # pylint: disable=abstract-method
+class BaseClientSidePaymentProcessor(BasePaymentProcessor, metaclass=abc.ABCMeta):  # pylint: disable=abstract-method
     """ Base class for client-side payment processors. """
-
-    __metaclass__ = abc.ABCMeta
 
     def get_template_name(self):
         """ Returns the path of the template to be loaded for this payment processor.

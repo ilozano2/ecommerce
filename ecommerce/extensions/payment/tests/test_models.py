@@ -24,4 +24,4 @@ class SDNCheckFailureTests(TestCase):
             username=self.username
         )
 
-        self.assertEqual(unicode(basket), expected)
+        self.assertEqual(str(basket), expected)

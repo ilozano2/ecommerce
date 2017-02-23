@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 import hashlib
 import re
 
@@ -60,7 +60,7 @@ class ConditionalOffer(AbstractConditionalOffer):
             )
 
         if self.email_domains:
-            if not isinstance(self.email_domains, basestring):
+            if not isinstance(self.email_domains, str):
                 log_message_and_raise_validation_error(
                     'Failed to create ConditionalOffer. ConditionalOffer email domains must be of type string.'
                 )
@@ -101,7 +101,7 @@ class ConditionalOffer(AbstractConditionalOffer):
 
     def clean_max_global_applications(self):
         if self.max_global_applications is not None:
-            if self.max_global_applications < 1 or not isinstance(self.max_global_applications, (int, long)):
+            if self.max_global_applications < 1 or not isinstance(self.max_global_applications, int):
                 log_message_and_raise_validation_error(
                     'Failed to create ConditionalOffer. max_global_applications field must be a positive number.'
                 )
@@ -158,7 +158,7 @@ class ConditionalOffer(AbstractConditionalOffer):
 
 
 def validate_credit_seat_type(course_seat_types):
-    if not isinstance(course_seat_types, basestring):
+    if not isinstance(course_seat_types, str):
         log_message_and_raise_validation_error('Failed to create Range. Credit seat types must be of type string.')
 
     course_seat_types_list = course_seat_types.split(',')

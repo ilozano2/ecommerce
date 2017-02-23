@@ -24,7 +24,7 @@ class CatalogAdmin(admin.ModelAdmin):
     def render_change_form(self, request, context, *args, **kwargs):
         if 'partner' in context['adminform'].form.fields:
             context['adminform'].form.fields['partner'].help_text = _(
-                u"Click 'Save and Continue Editing' to add stock records"
+                "Click 'Save and Continue Editing' to add stock records"
             )
         return super(CatalogAdmin, self).render_change_form(request, context, args, kwargs)
 

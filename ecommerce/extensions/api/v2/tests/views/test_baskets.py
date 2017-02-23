@@ -59,7 +59,7 @@ class BasketCreateViewTests(BasketCreationMixin, ThrottlingMixin, TransactionTes
         factories.ProductFactory(
             structure='child',
             parent=self.base_product,
-            title=u'Papier-mâché',
+            title='Papier-mâché',
             stockrecords__partner_sku=self.ALTERNATE_FREE_SKU,
             stockrecords__price_excl_tax=Decimal('0.00'),
             stockrecords__partner__short_code='otto',
@@ -104,7 +104,7 @@ class BasketCreateViewTests(BasketCreationMixin, ThrottlingMixin, TransactionTes
         ALWAYS create a new basket. """
         # Create two editable baskets for the user
         basket_count = 2
-        for _ in xrange(basket_count):
+        for _ in range(basket_count):
             basket = Basket(owner=self.user, status='Open')
             basket.save()
 
@@ -197,7 +197,7 @@ class BasketCreateViewTests(BasketCreationMixin, ThrottlingMixin, TransactionTes
         """Test that the rate of requests to the basket creation endpoint is throttled."""
         request_limit = UserRateThrottle().num_requests
         # Make a number of requests equal to the number of allowed requests
-        for _ in xrange(request_limit):
+        for _ in range(request_limit):
             self.create_basket(skus=[self.PAID_SKU])
 
         # Make one more request to trigger throttling of the client

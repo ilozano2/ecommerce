@@ -1,10 +1,10 @@
 # coding=utf-8
-from __future__ import unicode_literals
+
 import datetime
 from decimal import Decimal
 import json
 import logging
-from urlparse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse
 
 from django.core.management import call_command
 from django.test import override_settings
@@ -85,7 +85,7 @@ class CourseMigrationTestMixin(CourseCatalogTestMixin):
         body = {
             'course_id': self.course_id,
             'course_modes': [{'slug': mode, 'min_price': price, 'expiration_datetime': EXPIRES_STRING} for
-                             mode, price in self.prices.iteritems()]
+                             mode, price in self.prices.items()]
         }
         httpretty.register_uri(httpretty.GET, self.enrollment_api_url, body=json.dumps(body), content_type=JSON)
 
@@ -105,7 +105,7 @@ class CourseMigrationTestMixin(CourseCatalogTestMixin):
             expected_title += ' with {} certificate'.format(certificate_type)
 
             if seat.attr.id_verification_required:
-                expected_title += u' (and ID verification)'
+                expected_title += ' (and ID verification)'
 
         self.assertEqual(seat.title, expected_title)
         self.assertEqual(getattr(seat.attr, 'certificate_type', ''), certificate_type)

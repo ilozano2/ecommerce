@@ -1,7 +1,7 @@
 import json
 import logging
 import re
-from urllib import urlencode
+from urllib.parse import urlencode
 
 import requests
 from django.conf import settings
@@ -47,7 +47,7 @@ def middle_truncate(string, chars):
 
     slice_size = (chars - indicator_length) / 2
     start, end = string[:slice_size], string[-slice_size:]
-    truncated = u'{start}{indicator}{end}'.format(start=start, indicator=indicator, end=end)
+    truncated = '{start}{indicator}{end}'.format(start=start, indicator=indicator, end=end)
 
     return truncated
 

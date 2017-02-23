@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 from decimal import Decimal
 
@@ -44,17 +44,17 @@ class StatusTestsMixin(object):
     def test_available_statuses(self):
         """ Verify available_statuses() returns a list of statuses corresponding to the pipeline. """
 
-        for status, allowed_transitions in self.pipeline.iteritems():
+        for status, allowed_transitions in self.pipeline.items():
             instance = self._get_instance(status=status)
             self.assertEqual(instance.available_statuses(), allowed_transitions)
 
     def test_set_status_invalid_status(self):
         """ Verify attempts to set the status to an invalid value raise an exception. """
 
-        for status, valid_statuses in self.pipeline.iteritems():
+        for status, valid_statuses in self.pipeline.items():
             instance = self._get_instance(status=status)
 
-            all_statuses = self.pipeline.keys()
+            all_statuses = list(self.pipeline.keys())
             invalid_statuses = set(all_statuses) - set(valid_statuses)
 
             for new_status in invalid_statuses:
@@ -65,7 +65,7 @@ class StatusTestsMixin(object):
     def test_set_status_valid_status(self):
         """ Verify status is updated when attempting to transition to a valid status. """
 
-        for status, valid_statuses in self.pipeline.iteritems():
+        for status, valid_statuses in self.pipeline.items():
             for new_status in valid_statuses:
                 instance = self._get_instance(status=status)
                 instance.set_status(new_status)
@@ -89,7 +89,7 @@ class RefundTests(RefundTestMixin, StatusTestsMixin, TestCase):
 
     def test_all_statuses(self):
         """ Refund.all_statuses should return all possible statuses for a refund. """
-        self.assertEqual(Refund.all_statuses(), self.pipeline.keys())
+        self.assertEqual(Refund.all_statuses(), list(self.pipeline.keys()))
 
     @ddt.data(False, True)
     def test_create_with_lines(self, multiple_lines):

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """Unit tests of Paypal payment processor implementation."""
-from __future__ import unicode_literals
+
 
 import json
 import logging
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 import ddt
 import mock
@@ -69,8 +69,8 @@ class PaypalTests(PaypalMixin, PaymentProcessorTestCaseMixin, TestCase):
         # construction of absolute URLs
         self.request = RequestFactory().post('/')
         self.processor_response_log = (
-            u"Failed to execute PayPal payment on attempt [{attempt_count}]. "
-            u"PayPal's response was recorded in entry [{entry_id}]."
+            "Failed to execute PayPal payment on attempt [{attempt_count}]. "
+            "PayPal's response was recorded in entry [{entry_id}]."
         )
 
     def _assert_transaction_parameters(self):
@@ -312,8 +312,8 @@ class PaypalTests(PaypalMixin, PaymentProcessorTestCaseMixin, TestCase):
                     ),
                     (
                         logger_name, 'ERROR',
-                        u"Failed to execute PayPal payment [{payment_id}]. "
-                        u"PayPal's response was recorded in entry [{entry_id}].".format(
+                        "Failed to execute PayPal payment [{payment_id}]. "
+                        "PayPal's response was recorded in entry [{entry_id}].".format(
                             payment_id=self.PAYMENT_ID,
                             entry_id=payment_processor_response
                         )
@@ -356,8 +356,8 @@ class PaypalTests(PaypalMixin, PaymentProcessorTestCaseMixin, TestCase):
                     ),
                     (
                         logger_name, 'ERROR',
-                        u"Failed to execute PayPal payment [{payment_id}]. "
-                        u"PayPal's response was recorded in entry [{entry_id}].".format(
+                        "Failed to execute PayPal payment [{payment_id}]. "
+                        "PayPal's response was recorded in entry [{entry_id}].".format(
                             payment_id=self.PAYMENT_ID,
                             entry_id=payment_processor_responses[1]
                         )
