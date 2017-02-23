@@ -1,5 +1,5 @@
 import hashlib
-from urlparse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlparse
 
 from django.conf import settings
 from django.core.cache import cache

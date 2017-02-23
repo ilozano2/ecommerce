@@ -1,7 +1,7 @@
 import datetime
 import hashlib
 import json
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 import ddt
 import httpretty
@@ -307,7 +307,7 @@ class BasketSummaryViewTests(CourseCatalogTestMixin, CourseCatalogMockMixin, Lms
             l.check(
                 (
                     logger_name, 'ERROR',
-                    u'Failed to retrieve data from Catalog Service for course [{}].'.format(self.course.id)
+                    'Failed to retrieve data from Catalog Service for course [{}].'.format(self.course.id)
                 )
             )
 
@@ -537,7 +537,7 @@ class BasketSummaryViewTests(CourseCatalogTestMixin, CourseCatalogMockMixin, Lms
         self.client.logout()
         response = self.client.get(self.path)
         testserver_login_url = self.get_full_url(reverse(settings.LOGIN_URL))
-        expected_url = '{path}?next={next}'.format(path=testserver_login_url, next=urllib.quote(self.path))
+        expected_url = '{path}?next={next}'.format(path=testserver_login_url, next=urllib.parse.quote(self.path))
         self.assertRedirects(response, expected_url, target_status_code=302)
 
     @ddt.data(

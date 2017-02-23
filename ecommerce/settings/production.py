@@ -51,7 +51,7 @@ with open(CONFIG_FILE) as f:
     # than pumping them into the local vars.
     dict_updates = {key: config_from_yaml.pop(key, None) for key in DICT_UPDATE_KEYS}
 
-    for key, value in dict_updates.items():
+    for key, value in list(dict_updates.items()):
         if value:
             vars()[key].update(value)
 
@@ -66,13 +66,13 @@ DB_OVERRIDES = dict(
     PORT=environ.get('DB_MIGRATION_PORT', DATABASES['default']['PORT']),
 )
 
-for override, value in DB_OVERRIDES.iteritems():
+for override, value in DB_OVERRIDES.items():
     DATABASES['default'][override] = value
 
 
 # PAYMENT PROCESSOR OVERRIDES
-for __, configs in PAYMENT_PROCESSOR_CONFIG.iteritems():
-    for __, config in configs.iteritems():
+for __, configs in PAYMENT_PROCESSOR_CONFIG.items():
+    for __, config in configs.items():
         config.update({
             'receipt_path': PAYMENT_PROCESSOR_RECEIPT_PATH,
             'cancel_checkout_path': PAYMENT_PROCESSOR_CANCEL_PATH,

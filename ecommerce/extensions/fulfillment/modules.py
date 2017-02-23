@@ -33,13 +33,12 @@ Voucher = get_model('voucher', 'Voucher')
 logger = logging.getLogger(__name__)
 
 
-class BaseFulfillmentModule(object):  # pragma: no cover
+class BaseFulfillmentModule(object, metaclass=abc.ABCMeta):  # pragma: no cover
     """
     Base FulfillmentModule class for containing Product specific fulfillment logic.
 
     All modules should extend the FulfillmentModule and adhere to the defined contract.
     """
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def supports_line(self, line):

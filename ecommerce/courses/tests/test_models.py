@@ -22,9 +22,9 @@ StockRecord = get_model('partner', 'StockRecord')
 class CourseTests(CourseCatalogTestMixin, TestCase):
     def test_unicode(self):
         """Verify the __unicode__ method returns the Course ID."""
-        course_id = u'edx/Demo_Course/DemoX'
+        course_id = 'edx/Demo_Course/DemoX'
         course = Course.objects.create(id=course_id)
-        self.assertEqual(unicode(course), course_id)
+        self.assertEqual(str(course), course_id)
 
     def test_seat_products(self):
         """
@@ -166,7 +166,7 @@ class CourseTests(CourseCatalogTestMixin, TestCase):
         price = 10
 
         # Verify that the course can have multiple credit seats added to it
-        for credit_provider, credit_hours in credit_data.iteritems():
+        for credit_provider, credit_hours in credit_data.items():
             credit_seat = course.create_or_update_seat(
                 certificate_type,
                 id_verification_required,

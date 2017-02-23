@@ -78,7 +78,7 @@ class OrderViewBrowserTestBase(LiveServerTestCase):
     def retry_fulfillment(self):
         """ Click the retry fulfillment button and wait for the AJAX call to finish. """
         button = self.selenium.find_element_by_css_selector(self.btn_selector)
-        self.assertEqual(unicode(self.order.number), button.get_attribute('data-order-number'))
+        self.assertEqual(str(self.order.number), button.get_attribute('data-order-number'))
         button.click()
 
         # Wait for the AJAX call to finish and display an alert

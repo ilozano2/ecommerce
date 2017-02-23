@@ -1,6 +1,6 @@
 """HTTP endpoints for interacting with vouchers."""
 import logging
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 import django_filters
 from dateutil import parser

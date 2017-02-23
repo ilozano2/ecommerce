@@ -33,7 +33,7 @@ class LMSPublisherTests(CourseCatalogTestMixin, TestCase):
         self.course.create_or_update_seat('honor', False, 0, self.partner)
         self.course.create_or_update_seat('verified', True, 50, self.partner)
         self.publisher = LMSPublisher()
-        self.error_message = u'Failed to publish commerce data for {course_id} to LMS.'.format(
+        self.error_message = 'Failed to publish commerce data for {course_id} to LMS.'.format(
             course_id=self.course.id
         )
 
@@ -77,7 +77,7 @@ class LMSPublisherTests(CourseCatalogTestMixin, TestCase):
                 l.check(
                     (
                         LOGGER_NAME, 'ERROR',
-                        u'Failed to publish commerce data for [{course_id}] to LMS.'.format(
+                        'Failed to publish commerce data for [{course_id}] to LMS.'.format(
                             course_id=self.course.id
                         )
                     )
@@ -101,7 +101,7 @@ class LMSPublisherTests(CourseCatalogTestMixin, TestCase):
             l.check(
                 (
                     LOGGER_NAME, 'ERROR',
-                    u'Failed to publish commerce data for [{}] to LMS. Status was [{}]. Body was [{}].'.format(
+                    'Failed to publish commerce data for [{}] to LMS. Status was [{}]. Body was [{}].'.format(
                         self.course.id, status, json.dumps(error_msg))
                 )
             )

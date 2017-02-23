@@ -1,5 +1,5 @@
 import datetime
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 import httpretty
 import pytz
@@ -99,7 +99,7 @@ class GetVoucherTests(CourseCatalogTestMixin, TestCase):
         request = RequestFactory().request()
         valid, msg = voucher_is_valid(voucher=voucher, products=[product], request=request)
         self.assertTrue(valid)
-        self.assertEquals(msg, '')
+        self.assertEqual(msg, '')
 
     def test_no_voucher(self):
         """ Verify voucher_is_valid() assess that the voucher is invalid. """
@@ -254,7 +254,7 @@ class CouponOfferViewTests(ApiMockMixin, CouponMixin, CourseCatalogTestMixin, Lm
         response = self.client.get(url)
 
         testserver_login_url = self.get_full_url(reverse('login'))
-        expected_url = '{path}?next={next}'.format(path=testserver_login_url, next=urllib.quote(url))
+        expected_url = '{path}?next={next}'.format(path=testserver_login_url, next=urllib.parse.quote(url))
         self.assertRedirects(response, expected_url, target_status_code=302)
 
     def test_credit_seat_response(self):

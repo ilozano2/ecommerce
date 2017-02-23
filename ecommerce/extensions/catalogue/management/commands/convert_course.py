@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 import logging
 from optparse import make_option
@@ -63,7 +63,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.options = options  # pylint: disable=attribute-defined-outside-init
-        course_ids = map(unicode, args)
+        course_ids = list(map(str, args))
 
         self.access_token = options.get('access_token')  # pylint: disable=attribute-defined-outside-init
         if not self.access_token:

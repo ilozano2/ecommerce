@@ -107,7 +107,7 @@ class BulkPurchaseTests(EcommerceApiMixin, EnrollmentApiMixin, LogistrationMixin
         self.assertTrue(self.basket_add_product_page.is_browser_on_page())
 
         link_text = self.basket_add_product_page.q(css='div.basket-switch-link a.btn-link')[0].text
-        self.assertEqual(u"Click here to just purchase an enrollment for yourself", link_text)
+        self.assertEqual("Click here to just purchase an enrollment for yourself", link_text)
 
     def test_basket_payment_buttons(self):
         """

@@ -1,5 +1,5 @@
 import logging
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 from babel.numbers import format_currency as default_format_currency
 from django.conf import settings
@@ -48,10 +48,10 @@ def get_receipt_page_url(site_configuration, order_number=None, override_url=Non
             return override_url
         else:
             base_url = site_configuration.build_ecommerce_url(reverse('checkout:receipt'))
-            params = urllib.urlencode({'order_number': order_number}) if order_number else ''
+            params = urllib.parse.urlencode({'order_number': order_number}) if order_number else ''
     else:
         base_url = site_configuration.build_lms_url('/commerce/checkout/receipt/')
-        params = urllib.urlencode({'orderNum': order_number}) if order_number else ''
+        params = urllib.parse.urlencode({'orderNum': order_number}) if order_number else ''
 
     return '{base_url}{params}'.format(
         base_url=base_url,
@@ -80,4 +80,4 @@ def add_currency(amount):
     Returns:
         str: Formatted price with currency.
     """
-    return format_currency(settings.OSCAR_DEFAULT_CURRENCY, amount, u'#,##0.00')
+    return format_currency(settings.OSCAR_DEFAULT_CURRENCY, amount, '#,##0.00')

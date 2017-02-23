@@ -24,7 +24,7 @@ class StockRecordViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         """ Update a stock record. """
         allowed_fields = ['price_currency', 'price_excl_tax']
-        if any([key not in allowed_fields for key in request.data.keys()]):
+        if any([key not in allowed_fields for key in list(request.data.keys())]):
             return Response({
                 'message': "Only the price_currency and price_excl_tax fields are allowed to be modified."
             }, status=status.HTTP_400_BAD_REQUEST)

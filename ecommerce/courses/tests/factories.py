@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 import factory
 from factory.fuzzy import FuzzyText

@@ -40,14 +40,14 @@ class BasketTests(TestCase):
     def test_unicode(self):
         """ Verify the __unicode__ method returns the correct value. """
         basket = factories.create_basket()
-        expected = u"{id} - {status} basket (owner: {owner}, lines: {num_lines})".format(
+        expected = "{id} - {status} basket (owner: {owner}, lines: {num_lines})".format(
             id=basket.id,
             status=basket.status,
             owner=basket.owner,
             num_lines=basket.num_lines
         )
 
-        self.assertEqual(unicode(basket), expected)
+        self.assertEqual(str(basket), expected)
 
     def test_get_basket_without_existing_baskets(self):
         """ If the user has no existing baskets, the method should return a new one. """

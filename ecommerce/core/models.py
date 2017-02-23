@@ -1,7 +1,7 @@
 import datetime
 import hashlib
 import logging
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 from analytics import Client as SegmentClient
 from dateutil.parser import parse
@@ -386,7 +386,7 @@ class User(AbstractUser):
     @property
     def access_token(self):
         try:
-            return self.social_auth.first().extra_data[u'access_token']  # pylint: disable=no-member
+            return self.social_auth.first().extra_data['access_token']  # pylint: disable=no-member
         except Exception:  # pylint: disable=broad-except
             return None
 

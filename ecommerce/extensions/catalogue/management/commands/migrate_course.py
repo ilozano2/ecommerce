@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 import logging
 from optparse import make_option
 
@@ -58,7 +58,7 @@ class MigratedCourse(object):
 
         course_name = data.get('name')
         if course_name is None:
-            message = u'Unable to retrieve course name for {}.'.format(self.course.id)
+            message = 'Unable to retrieve course name for {}.'.format(self.course.id)
             logger.error(message)
             raise Exception(message)
 
@@ -88,7 +88,7 @@ class MigratedCourse(object):
 
         course_name = data.get('name')
         if course_name is None:
-            message = u'Aborting migration. No name is available for {}.'.format(self.course.id)
+            message = 'Aborting migration. No name is available for {}.'.format(self.course.id)
             logger.error(message)
             raise Exception(message)
 
@@ -127,7 +127,7 @@ class MigratedCourse(object):
             course_name, course_verification_deadline = self._query_commerce_api(headers)
         except Exception as e:  # pylint: disable=broad-except
             logger.warning(
-                u"Calling Commerce API failed with: [%s]. Falling back to Course Structure API.",
+                "Calling Commerce API failed with: [%s]. Falling back to Course Structure API.",
                 e.message
             )
             course_name, course_verification_deadline = self._query_course_structure_api(access_token)
@@ -185,7 +185,7 @@ class Command(BaseCommand):
             return
 
         for course_id in course_ids:
-            course_id = unicode(course_id)
+            course_id = str(course_id)
             try:
                 with transaction.atomic():
                     migrated_course = MigratedCourse(course_id, site_domain)

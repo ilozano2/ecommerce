@@ -102,13 +102,13 @@ class BasketCreationMixin(UserMixin, JwtMixin):
         self.user = self.create_user()
 
         product_class = factories.ProductClassFactory(
-            name=u'Áutomobilé',
+            name='Áutomobilé',
             requires_shipping=False,
             track_stock=False
         )
         self.base_product = factories.ProductFactory(
             structure='parent',
-            title=u'Lamborghinï Gallardœ',
+            title='Lamborghinï Gallardœ',
             product_class=product_class,
             stockrecords=None,
         )

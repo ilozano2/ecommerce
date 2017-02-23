@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 from hashlib import md5
 import logging
@@ -133,20 +133,20 @@ def generate_sku(product, partner):
 
     if product_class.name == 'Coupon':
         _hash = ' '.join((
-            unicode(product.id),
+            str(product.id),
             str(partner.id)
         ))
     elif product_class.name == ENROLLMENT_CODE_PRODUCT_CLASS_NAME:
         _hash = ' '.join((
             getattr(product.attr, 'course_key', ''),
             getattr(product.attr, 'seat_type', ''),
-            unicode(partner.id)
+            str(partner.id)
         ))
     elif product_class.name == SEAT_PRODUCT_CLASS_NAME:
         _hash = ' '.join((
             getattr(product.attr, 'certificate_type', ''),
             product.attr.course_key,
-            unicode(product.attr.id_verification_required),
+            str(product.attr.id_verification_required),
             getattr(product.attr, 'credit_provider', ''),
             str(partner.id)
         ))

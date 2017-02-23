@@ -1,9 +1,9 @@
-from __future__ import unicode_literals
+
 
 import datetime
 import json
 import os
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 import ddt
 import httpretty
@@ -168,7 +168,7 @@ class CybersourceMixin(PaymentEventsMixin):
         """ Generates a dict containing the API reply fields expected to be received from CyberSource. """
 
         req_reference_number = kwargs.get('req_reference_number', basket.order_number)
-        total = unicode(basket.total_incl_tax)
+        total = str(basket.total_incl_tax)
         auth_amount = auth_amount or total
         notification = {
             'decision': decision,
@@ -199,7 +199,7 @@ class CybersourceMixin(PaymentEventsMixin):
             if billing_address.state:
                 notification['req_bill_to_address_state'] = billing_address.state
 
-        notification['signed_field_names'] = ','.join(notification.keys())
+        notification['signed_field_names'] = ','.join(list(notification.keys()))
         notification['signature'] = self.generate_signature(self.processor.secret_key, notification)
         return notification
 
@@ -217,14 +217,14 @@ class CybersourceMixin(PaymentEventsMixin):
             def runTransaction(self, **kwargs):  # pylint: disable=unused-argument
                 cc_reply_items = {
                     'reasonCode': 100,
-                    'amount': unicode(amount),
+                    'amount': str(amount),
                     'requestDateTime': '2015-01-01T:00:00:00Z',
                     'reconciliationID': 'efg456'
                 }
                 items = {
                     'requestID': transaction_id,
                     'decision': decision,
-                    'merchantReferenceCode': unicode(basket_id),
+                    'merchantReferenceCode': str(basket_id),
                     'reasonCode': 100,
                     'requestToken': 'abc123',
                     'purchaseTotals': Factory.object('PurchaseTotals', {'currency': currency}),
@@ -259,7 +259,7 @@ class CybersourceMixin(PaymentEventsMixin):
             'locale': settings.LANGUAGE_CODE,
             'transaction_type': 'sale',
             'reference_number': basket.order_number,
-            'amount': unicode(basket.total_incl_tax),
+            'amount': str(basket.total_incl_tax),
             'currency': basket.currency,
             'override_custom_receipt_page': basket.site.siteconfiguration.build_ecommerce_url(
                 reverse('cybersource_redirect')
@@ -376,7 +376,7 @@ class CybersourceNotificationTestsMixin(CybersourceMixin):
         # Ensure the response is stored in the database
         self.assert_processor_response_recorded(
             self.processor_name,
-            notification[u'transaction_id'],
+            notification['transaction_id'],
             notification,
             basket=self.basket
         )
@@ -440,7 +440,7 @@ class CybersourceNotificationTestsMixin(CybersourceMixin):
         )
         self.client.post(self.path, notification)
 
-        self.assert_processor_response_recorded(self.processor_name, notification[u'transaction_id'], notification)
+        self.assert_processor_response_recorded(self.processor_name, notification['transaction_id'], notification)
 
     @ddt.data(('line2', 'foo'), ('state', 'bar'))
     @ddt.unpack
@@ -486,14 +486,14 @@ class CybersourceNotificationTestsMixin(CybersourceMixin):
         order should NOT be created.
         """
         notification = self.generate_notification(self.basket)
-        notification[u'signature'] = u'Tampered'
+        notification['signature'] = 'Tampered'
         self.client.post(self.path, notification)
 
         # The basket should not have an associated order
         self.assertFalse(Order.objects.filter(basket=self.basket).exists())
 
         # The response should be saved.
-        self.assert_processor_response_recorded(self.processor_name, notification[u'transaction_id'], notification,
+        self.assert_processor_response_recorded(self.processor_name, notification['transaction_id'], notification,
                                                 basket=self.basket)
 
 
@@ -568,7 +568,7 @@ class PaypalMixin(object):
     def get_payment_creation_response_mock(self, basket,
                                            state=PAYMENT_CREATION_STATE, approval_url=APPROVAL_URL):
 
-        total = unicode(basket.total_incl_tax)
+        total = str(basket.total_incl_tax)
         payment_creation_response = {
             'create_time': '2015-05-04T18:18:27Z',
             'id': self.PAYMENT_ID,
@@ -605,7 +605,7 @@ class PaypalMixin(object):
                         {
                             'quantity': line.quantity,
                             'name': line.product.title,
-                            'price': unicode(line.line_price_incl_tax_incl_discounts / line.quantity),
+                            'price': str(line.line_price_incl_tax_incl_discounts / line.quantity),
                             'currency': line.stockrecord.price_currency,
                         }
                         for line in basket.all_lines()
@@ -642,28 +642,28 @@ class PaypalMixin(object):
 
     def get_payment_creation_error_response_mock(self):
         payment_creation_error_response = {
-            u'error': {
+            'error': {
                 'debug_id': '23432',
                 'message': '500 server error'
             },
-            u'intent': u'sale',
-            u'payer': {
-                u'payer_info': {u'shipping_address': {}},
-                u'payment_method': u'paypal'
+            'intent': 'sale',
+            'payer': {
+                'payer_info': {'shipping_address': {}},
+                'payment_method': 'paypal'
             },
-            u'redirect_urls': {
-                u'cancel_url': u'http://fake-cancel-page',
-                u'return_url': u'http://fake-return-url'
+            'redirect_urls': {
+                'cancel_url': 'http://fake-cancel-page',
+                'return_url': 'http://fake-return-url'
             },
-            u'state': 'failed',
-            u'transactions': []
+            'state': 'failed',
+            'transactions': []
         }
         return payment_creation_error_response
 
     def mock_payment_execution_response(self, basket, state=PAYMENT_EXECUTION_STATE, payer_info=None):
         if payer_info is None:
             payer_info = self.PAYER_INFO
-        total = unicode(basket.total_incl_tax)
+        total = str(basket.total_incl_tax)
         payment_execution_response = {
             'create_time': '2015-05-04T15:55:27Z',
             'id': self.PAYMENT_ID,
@@ -693,7 +693,7 @@ class PaypalMixin(object):
                         {
                             'quantity': line.quantity,
                             'name': line.product.title,
-                            'price': unicode(line.line_price_incl_tax_incl_discounts / line.quantity),
+                            'price': str(line.line_price_incl_tax_incl_discounts / line.quantity),
                             'currency': line.stockrecord.price_currency,
                         }
                         for line in basket.all_lines()

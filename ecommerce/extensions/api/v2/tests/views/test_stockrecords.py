@@ -73,7 +73,7 @@ class StockRecordViewSetTests(ProductSerializerMixin, CourseCatalogTestMixin, Th
         self.assertEqual(response.status_code, 200)
 
         stockrecord = StockRecord.objects.get(id=self.stockrecord.id)
-        self.assertEqual(unicode(stockrecord.price_excl_tax), data['price_excl_tax'])
+        self.assertEqual(str(stockrecord.price_excl_tax), data['price_excl_tax'])
         self.assertEqual(stockrecord.price_currency, data['price_currency'])
 
     def test_update_without_permission(self):

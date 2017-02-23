@@ -1,6 +1,6 @@
 import json
 import time
-from urllib import urlencode
+from urllib.parse import urlencode
 
 import mock
 import httpretty

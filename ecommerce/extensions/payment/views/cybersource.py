@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 import logging
 
@@ -72,7 +72,7 @@ class CybersourceSubmitView(FormView):
         return JsonResponse(data, status=400)
 
     def form_invalid(self, form):
-        errors = {field: error[0] for field, error in form.errors.iteritems()}
+        errors = {field: error[0] for field, error in form.errors.items()}
         logger.debug(errors)
 
         if errors.get('basket'):

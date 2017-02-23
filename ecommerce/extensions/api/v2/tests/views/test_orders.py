@@ -65,7 +65,7 @@ class OrderListViewTests(AccessTokenMixin, ThrottlingMixin, TestCase):
         content = json.loads(response.content)
 
         self.assertEqual(content['count'], 1)
-        self.assertEqual(content['results'][0]['number'], unicode(order.number))
+        self.assertEqual(content['results'][0]['number'], str(order.number))
 
         # Test ordering
         order_2 = factories.create_order(user=self.user)
@@ -74,8 +74,8 @@ class OrderListViewTests(AccessTokenMixin, ThrottlingMixin, TestCase):
         content = json.loads(response.content)
 
         self.assertEqual(content['count'], 2)
-        self.assertEqual(content['results'][0]['number'], unicode(order_2.number))
-        self.assertEqual(content['results'][1]['number'], unicode(order.number))
+        self.assertEqual(content['results'][0]['number'], str(order_2.number))
+        self.assertEqual(content['results'][1]['number'], str(order.number))
 
     def test_with_other_users_orders(self):
         """ The view should only return orders for the authenticated users. """
@@ -88,7 +88,7 @@ class OrderListViewTests(AccessTokenMixin, ThrottlingMixin, TestCase):
         response = self.client.get(self.path, HTTP_AUTHORIZATION=self.token)
         content = json.loads(response.content)
         self.assertEqual(content['count'], 1)
-        self.assertEqual(content['results'][0]['number'], unicode(order.number))
+        self.assertEqual(content['results'][0]['number'], str(order.number))
 
     @ddt.unpack
     @ddt.data(
@@ -103,7 +103,7 @@ class OrderListViewTests(AccessTokenMixin, ThrottlingMixin, TestCase):
         response = self.client.get(self.path, HTTP_AUTHORIZATION=self.generate_jwt_token_header(admin_user))
         content = json.loads(response.content)
         self.assertEqual(content['count'], 1)
-        self.assertEqual(content['results'][0]['number'], unicode(order.number))
+        self.assertEqual(content['results'][0]['number'], str(order.number))
 
     def test_user_information(self):
         """ Make sure that the correct user information is returned. """
@@ -113,7 +113,7 @@ class OrderListViewTests(AccessTokenMixin, ThrottlingMixin, TestCase):
         response = self.client.get(self.path, HTTP_AUTHORIZATION=self.generate_jwt_token_header(admin_user))
         content = json.loads(response.content)
         self.assertEqual(content['count'], 1)
-        self.assertEqual(content['results'][0]['number'], unicode(order.number))
+        self.assertEqual(content['results'][0]['number'], str(order.number))
         self.assertEqual(content['results'][0]['user']['email'], admin_user.email)
         self.assertEqual(content['results'][0]['user']['username'], admin_user.username)
 
@@ -247,7 +247,7 @@ class OrderFulfillViewTests(TestCase):
 
         # Reload the order from the DB and check its status
         self.order = Order.objects.get(number=self.order.number)
-        self.assertEqual(unicode(self.order.number), response.data['number'])
+        self.assertEqual(str(self.order.number), response.data['number'])
         self.assertEqual(self.order.status, response.data['status'])
 
     def test_fulfillment_failed(self):

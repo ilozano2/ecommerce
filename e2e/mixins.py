@@ -310,7 +310,7 @@ class PaymentMixin(object):
             'card_cvn': '1234'
         }
 
-        for field, value in billing_information.items():
+        for field, value in list(billing_information.items()):
             self.browser.find_element_by_css_selector('#' + field).send_keys(value)
 
         # Click the payment button

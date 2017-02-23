@@ -24,7 +24,7 @@ class Catalog(models.Model):
     stock_records = models.ManyToManyField('partner.StockRecord', blank=True, related_name='catalogs')
 
     def __unicode__(self):
-        return u'{id}: {partner_code}-{catalog_name}'.format(
+        return '{id}: {partner_code}-{catalog_name}'.format(
             id=self.id,
             partner_code=self.partner.short_code,
             catalog_name=self.name

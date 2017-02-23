@@ -34,7 +34,7 @@ class RefundListView(FilterFieldsMixin, ListView):
 
         self.form = self.form_class(self.request.GET)
         if self.form.is_valid():
-            for field, value in self.form.cleaned_data.iteritems():
+            for field, value in self.form.cleaned_data.items():
                 if value:
                     # Check if the field has a custom query filter setup.
                     # If not, use a standard Django equals/match filter.

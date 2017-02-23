@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 import httpretty
 import mock
