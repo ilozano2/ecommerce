@@ -264,6 +264,7 @@ class OrderSerializer(serializers.ModelSerializer):
             'payment_processor',
             'status',
             'total_excl_tax',
+            'total_before_discounts_incl_tax',
             'user',
             'vouchers',
         )

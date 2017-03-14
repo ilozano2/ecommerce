@@ -29,6 +29,7 @@ define([
 
     initialize: function (options) {
       this.orderNumber = options.orderNumber;
+      this.attempts = 0;
     },
 
     retrieveReceiptData: function () {
@@ -45,6 +46,7 @@ define([
       if (paymentMethod) {
         return _s.sprintf('%s %s', paymentMethod.card_type, paymentMethod.number);
       }
+      return null;
     },
 
     getCourseOrg: function(attributes) {
@@ -56,7 +58,8 @@ define([
     },
 
     appendLineData: function (lines) {
-      var context;
+      var context,
+          elements = [];
       _.each(lines, function(line) {
         context = {
           'quantity': line.quantity,
@@ -64,15 +67,18 @@ define([
           'organization': this.getCourseOrg(line.product.attribute_values),
           'price': line.unit_price_excl_tax
         };
-        this.$('.order-lines-data').append(this.lineTemplate(context));
+        elements.push(this.lineTemplate(context))
       }, this);
+      this.$('.order-lines-data').append(elements);
     },
 
     getVoucherData: function (vouchers) {
-      var stringFormat, formattedVouchers = [];
-      if (vouchers.length > 0) {
-        stringFormat = vouchers[0].benefit.type === 'Percentage' ? '%u%%' : '$%u';
+      var stringFormat,
+          formattedVouchers = [];
+
+      if (vouchers.length) {
         _.each(vouchers, function(voucher) {
+          stringFormat = voucher.benefit.type === 'Percentage' ? '%u%%' : '$%u';
           formattedVouchers.push({
             'code': voucher.code,
             'benefit': _s.sprintf(stringFormat, voucher.benefit.value)
@@ -88,8 +94,9 @@ define([
     },
 
     onSuccess: function (data) {
-      console.log(data);
       var context;
+      this.attempts += 1;
+
       if (data.status === 'Complete') {
         context = {
           'billingAddress': data.billing_address,
@@ -97,16 +104,14 @@ define([
           'userEmail': data.user.email,
           'orderDate': moment(data.date_placed).format('MMM DD, YYYY'),
           'paymentMethod': this.formatPaymentMethod(data.payment_method),
-          'subtotalPrice': this.formatPrice(
-            data.currency, (Number(data.discount) + Number(data.total_excl_tax))
-          ),
+          'subtotalPrice': this.formatPrice(data.currency, data.total_before_discounts_incl_tax),
           'discountPrice': this.formatPrice(data.currency, data.discount),
           'totalPrice': this.formatPrice(data.currency, data.total_excl_tax),
           'voucherData': this.getVoucherData(data.vouchers),
         };
         this.$el.html(this.receiptTemplate(context));
         this.appendLineData(data.lines);
-      } else if (data.status === 'Open') {
+      } else if (data.status === 'Open' && this.attempts < 6) {
         setTimeout($.proxy(this.retrieveReceiptData, this), 2000);
       } else {
         this.displayError();
